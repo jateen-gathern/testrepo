@@ -14,6 +14,7 @@ jobs:
         run: |
           echo "Hey Its a test"
           echo "${{ github.sha }}"
+          echo "hello"
   deploying-pre-prod:
     name: pre-prod-deployment
     runs-on: ubuntu-latest
