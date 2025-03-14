@@ -1,0 +1,24 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploying-dev:
+    name: plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: "test"
+        run: |
+          echo "Hey Its a test"
+  deploying-prod:
+    name: plan
+    runs-on: ubuntu-latest
+    needs: deploying-dev
+    environment: prod
+    steps:
+      - name: "test"
+        run: |
+          echo "Hey Its a test"
