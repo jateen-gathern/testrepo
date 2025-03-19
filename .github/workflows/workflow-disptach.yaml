@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: Check User and Branch
         run: |
+          echo $GITHUB_ACTOR
           ALLOWED_USER="jateen-gathern"
           TARGET_BRANCH="${{ github.ref_name }}"  # GitHub Actions exposes branch name as ref_name
           
