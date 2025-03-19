@@ -22,6 +22,7 @@ jobs:
             echo "❌ This workflow can only be executed on the 'main' branch!"
             exit 1
           fi
+          
         env:
           GITHUB_ACTOR: ${{ github.actor }}
 
