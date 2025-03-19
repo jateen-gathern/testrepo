@@ -13,7 +13,7 @@ jobs:
           ALLOWED_USER="jateen-gathern"
           TARGET_BRANCH="${{ github.ref_name }}"  # GitHub Actions exposes branch name as ref_name
           
-          if [[ "$GITHUB_ACTOR" != "$ALLOWED_USE" ]]; then
+          if [[ "$GITHUB_ACTOR" != "$ALLOWED_USER" ]]; then
             echo "❌ You are not authorized to run this workflow!"
             exit 1
           fi
