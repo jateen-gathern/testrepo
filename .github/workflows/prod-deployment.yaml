@@ -1,0 +1,59 @@
+name: Production-Deployment
+
+on:
+    push:
+    workflow_dispatch:
+      inputs:
+        environment:
+          description: "Select deployment environment"
+          required: true
+          default: "staging"
+          type: choice
+          options:
+            - staging
+            - production
+
+env: 
+  PRODUCTION_VALUES_FILE: "ms-financial/production/production-values.yaml"
+  DEVELOPMENT_VALUES_FILE: "ms-financial/development/development-values.yaml"
+
+jobs:
+    check-user-and-branch:
+        runs-on: ubuntu-24.04
+        steps:
+          - name: Check User and Branch
+            run: |
+              echo $GITHUB_ACTOR
+              ALLOWED_USER="jateen-gathern"
+              TARGET_BRANCH="${{ github.ref_name }}"  # GitHub Actions exposes branch name as ref_name
+              
+              if [[ "$GITHUB_ACTOR" != "$ALLOWED_USER" ]]; then
+                echo "❌ You are not authorized to run this workflow!"
+                exit 1
+              fi
+    
+              #if [[ "$TARGET_BRANCH" != "master" ]]; then
+              #  echo "❌ This workflow can only be executed on the 'main' branch!"
+              #  exit 1
+              #fi
+            env:
+              GITHUB_ACTOR: ${{ github.actor }}
+
+    deploy:
+        runs-on: ubuntu-24.04
+        needs: ["check-user-and-branch"]
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+            with:
+              repository: 'gathernHolding/ops-helmcharts-farm'
+              token: ${{ secrets.PAT_OPS_HELMCHARTS_FARM }}
+              ref: main
+          - name: Update Docker image tag in production values.yaml
+            id: extract_tag
+            run: |
+              IMAGE_TAG=$(yq '.image.tag' ms-financial/development/development-values.yaml)
+              echo "Extracted tag: $IMAGE_TAG"
+          - name: Check User and Branch
+            run: |
+                echo "Deployment Completed"
