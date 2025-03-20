@@ -5,7 +5,7 @@ on:
     workflow_dispatch:
       inputs:
         environment:
-          description: "Select deployment environment"
+          description: "deployment environment"
           required: true
           default: "production"
           type: choice
