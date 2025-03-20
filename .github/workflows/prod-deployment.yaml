@@ -7,10 +7,9 @@ on:
         environment:
           description: "Select deployment environment"
           required: true
-          default: "staging"
+          default: "production"
           type: choice
           options:
-            - staging
             - production
 
 env: 
