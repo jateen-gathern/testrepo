@@ -16,8 +16,8 @@ jobs:
           PR_TITLE: "${{ github.event.pull_request.title }}"
         run: |
           echo "Checking PR title: $PR_TITLE"
-          if [[ ! "$PR_TITLE" =~ ^(\(|\[)?(GC|GPP|GSG|GFC|GB)-[0-9]+(\)|\])?$ ]]; then
-            echo "❌ PR title must include a Jira ticket in the correct format (e.g., GPP-123, (GPP-123), [GPP-123])."
+          if [[ ! "$PR_TITLE" =~ ^(\(|\[)?(GC|GPP|GSG|GFC|GB)-[0-9]+(\)|\])?.* ]]; then
+            echo "❌ PR title must start with a Jira ticket in the correct format (e.g., GPP-123, (GPP-123), [GPP-123]) and can include additional text afterward."
             exit 1
           fi
           echo "✅ PR title is valid."
