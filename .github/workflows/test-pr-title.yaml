@@ -1,0 +1,35 @@
+name: Validate PR Branch Name
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  validate-pr-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Check PR title for Jira ticket
+      #   env:
+      #     PR_TITLE: "${{ github.event.pull_request.title }}"
+      #   run: |
+      #     echo "Checking PR title: $PR_TITLE"
+      #     if [[ ! "$PR_TITLE" =~ ^(\(|\[)?(GCD|GPPS|GGF|GCB)-[0-9]+(\)|\])?.* ]]; then
+      #       echo "❌ PR title must start with a Jira ticket in the correct format (e.g., GPPS-123, (GPPS-123), [GPPS-123]) and can include additional text afterward."
+      #       exit 1
+      #     fi
+      #     echo "✅ PR title is valid."
+
+      - name: Check branch name follows Jira ticket format
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF}"
+          echo "Checking branch name: $BRANCH_NAME"
+          if [[ ! "$BRANCH_NAME" =~ ^(\(|\[)?(GCD|GPPS|GGF|GCB)-[0-9]+(\)|\])?.* ]]; then
+            echo "❌ Branch name must start with a Jira ticket in the correct format (e.g., GPPS-123, (GPPS-123), [GPPS-123]) and can include additional text afterward."
+            exit 1
+          fi
+          echo "✅ Branch name is valid."
+
+      - name: Fail if check fails
+        if: failure()
+        run: exit 1
